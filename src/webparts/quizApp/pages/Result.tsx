@@ -1,3 +1,4 @@
+// Importing necessary modules and components
 import * as React from "react";
 import {
   Container,
@@ -7,12 +8,13 @@ import {
   Image,
   ProgressBar,
   Form,
-} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { IQuestion, SelectedOptionsType } from "../Interfaces";
-import axios from "axios";
-import { FinalOptions } from "../components/Options";
+} from "react-bootstrap"; // Importing necessary components from react-bootstrap
+import { useNavigate } from "react-router-dom"; // Importing useNavigate hook from react-router-dom
+import { IQuestion, SelectedOptionsType } from "../Interfaces"; // Importing necessary interfaces
+import axios from "axios"; // Importing axios for HTTP requests
+import { FinalOptions } from "../components/Options"; // Importing FinalOptions component
 
+// Function to add CORS to URL
 const withCORS = (url: string): string =>
   "https://api.allorigins.win/get?charset=ISO-8859-1&url=https://timeapi.io/api" +
   url;
@@ -28,14 +30,14 @@ interface IResult {
   correct: number;
   percent: number;
 }
-
+// Function to fetch response with CORS
 async function getCORSResponse(url: string): Promise<any> {
   const response = await axios.get(withCORS(url));
 
   const data = JSON.parse(response.data.contents);
   return data;
 }
-
+// Function to get today's date
 function getTodayDate() {
   const today = new Date();
   const year = today.getFullYear();
@@ -44,7 +46,7 @@ function getTodayDate() {
 
   return `${year}-${month}-${day}`;
 }
-
+// Result component
 export default function Result(props: IProps): React.ReactElement {
   const navigate = useNavigate();
   const { selectedOptions, questions, saveData } = props;
@@ -57,7 +59,6 @@ export default function Result(props: IProps): React.ReactElement {
   const answers = React.useMemo<string[]>(() => {
     return [ans1, ans2, ans3, ans4];
   }, [ans1, ans2, ans3, ans4]);
-  console.log("Redering");
 
   const result = React.useMemo<IResult>(() => {
     const allAnswers = [
@@ -75,6 +76,7 @@ export default function Result(props: IProps): React.ReactElement {
     };
   }, [ans1, ans2, ans3, ans4, selectedOptions]);
 
+  // Function to get answer 1
   const getAnswer1 = async (): Promise<string> => {
     try {
       const data = await getCORSResponse("/Conversion/DayOfTheWeek/1776-07-04");
@@ -87,6 +89,7 @@ export default function Result(props: IProps): React.ReactElement {
     }
   };
 
+  // Function to get answer 2
   const getAnswer2 = async (): Promise<string> => {
     try {
       const today = getTodayDate();
@@ -100,6 +103,7 @@ export default function Result(props: IProps): React.ReactElement {
     }
   };
 
+  // Function to get answer 3
   const getAnswer3 = async (): Promise<string> => {
     try {
       const data = await getCORSResponse("/Conversion/DayOfTheWeek/2024-12-05");
@@ -111,6 +115,7 @@ export default function Result(props: IProps): React.ReactElement {
     }
   };
 
+  // Function to get answer 4
   const getAnswer4 = async (): Promise<string> => {
     try {
       const data = await getCORSResponse(
@@ -124,6 +129,7 @@ export default function Result(props: IProps): React.ReactElement {
     }
   };
 
+  // Function to calculate answers
   const calculateAnswers = async (): Promise<void> => {
     setCalculating(true);
 
@@ -139,12 +145,12 @@ export default function Result(props: IProps): React.ReactElement {
     setCalculating(false);
   };
 
-  console.log({ ans1, ans2, ans3, ans4 });
-
+  // Effect hook to calculate answers when component mounts
   React.useEffect(() => {
     calculateAnswers();
   }, []);
 
+  // JSX rendering
   return (
     <Container fluid className="p-5 pb-0 text-center">
       {error ? (

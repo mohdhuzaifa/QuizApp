@@ -1,35 +1,32 @@
 import * as React from "react";
-import { Container, Row, Col, Button, Image } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-// import { sp } from "@pnp/sp/presets/all";
-// import { Environment, EnvironmentType } from "@microsoft/sp-core-library";
+import { Container, Row, Col, Button, Image } from "react-bootstrap"; // Importing necessary components from react-bootstrap
+import { useNavigate } from "react-router-dom"; // Importing useNavigate hook from react-router-dom
 
 export default function Home(props: any): React.ReactElement {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initializing navigate function from useNavigate hook
 
   return (
     <div style={{ background: "#1AC6EE", height: "100%" }}>
       <Container>
         <Row
           className="d-flex justify-content-center align-items-center pt-5"
-          style={{ minHeight: "100vh" }}
+          style={{ minHeight: "100vh" }} // Setting minimum height for the row
         >
           {/* Content Section */}
           <Col xs={12} md={6} className="p-3">
             <div
               className="content-section text-lg-start text-xs-center"
-              style={{ color: "white" }}
+              style={{ color: "white" }} // Styling for content section
             >
-              <h1>Welcome to Our Quiz App</h1>
-
+              <h1>Welcome to Our Quiz App</h1> {/* Heading */}
               <h4 className="my-4">
                 Test your knowledge with our fun and challenging quizzes!
-              </h4>
-
-              <h5>Are you ready to begin?</h5>
+              </h4>{" "}
+              {/* Subheading */}
+              <h5>Are you ready to begin?</h5> {/* Question */}
               <Button
                 variant="primary"
-                onClick={() => navigate("/quiz")}
+                onClick={() => navigate("/quiz")} // Navigate to quiz page on button click
                 style={{
                   marginTop: "20px",
                   marginBottom: "10px",
@@ -43,10 +40,11 @@ export default function Home(props: any): React.ReactElement {
                   cursor: "pointer",
                   transition: "background-color 0.3s ease",
                   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                }}
+                }} // Styling for the button
               >
                 Start Quiz
-              </Button>
+              </Button>{" "}
+              {/* Start quiz button */}
             </div>
           </Col>
 
@@ -56,7 +54,7 @@ export default function Home(props: any): React.ReactElement {
               <Image
                 src="https://play-lh.googleusercontent.com/Sk3qgXlM0ULQx1M9052HenpWmpFsKmb-r-NQkxjFGTBzJLyQLnBWWTELRIlrJFYH9Aw"
                 alt="Quiz"
-                fluid
+                fluid // Making the image fluid
               />
             </div>
           </Col>

@@ -1,35 +1,37 @@
 import * as React from "react";
-import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import Options from "../components/Options";
-import { IQuestion, SelectedOptionsType, E } from "../Interfaces";
+import { Container, Row, Col, Form, Button, Image } from "react-bootstrap"; // Importing necessary components from react-bootstrap
+import { useNavigate } from "react-router-dom"; // Importing useNavigate hook from react-router-dom
+import Options from "../components/Options"; // Importing Options component
+import { IQuestion, SelectedOptionsType, E } from "../Interfaces"; // Importing necessary interfaces
 
 interface IProps {
-  questions: IQuestion[];
-  selectedOptions: SelectedOptionsType;
-  handleOptionChange: (e: E) => void;
+  questions: IQuestion[]; // Interface for props containing quiz questions
+  selectedOptions: SelectedOptionsType; // Interface for props containing selected options
+  handleOptionChange: (e: E) => void; // Event handler function for option change
 }
 
 export default function Quiz(props: IProps): React.ReactElement {
-  const navigate = useNavigate();
-  const { questions, selectedOptions, handleOptionChange } = props;
+  const navigate = useNavigate(); // Initializing navigate function from useNavigate hook
+  const { questions, selectedOptions, handleOptionChange } = props; // Destructuring props
 
+  // Function to handle form submission
   function submitHandler(e: React.SyntheticEvent) {
-    e.preventDefault();
-    navigate("/result");
+    e.preventDefault(); // Preventing default form submission behavior
+    navigate("/result"); // Navigating to result page
   }
 
+  // Rendering Quiz component
   return (
     <div>
       <Container fluid className="p-5 pt-2">
         <div className="d-flex justify-content-between align-item-center ">
-          <h1 className="mt-3">Let&apos;s Start Quiz</h1>
+          <h1 className="mt-3">Let&apos;s Start Quiz</h1> {/* Heading */}
           <div>
             <Image
               src="https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg"
               alt="Quiz"
               fluid
-              style={{ maxHeight: "100px" }}
+              style={{ maxHeight: "100px" }} // Styling for the image
             />
           </div>
         </div>
@@ -37,13 +39,14 @@ export default function Quiz(props: IProps): React.ReactElement {
           <Col xs={12}>
             <div className="content-section">
               <Form className="mt-5" onSubmit={submitHandler}>
+                {/* Input fields for student name and date of birth */}
                 <Form.Group controlId="studentName" className="mb-4">
                   <Form.Label>Student Name</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your name"
                     name="name"
-                    onChange={handleOptionChange}
+                    onChange={handleOptionChange} // Handling option change for name input
                     required
                   />
                 </Form.Group>
@@ -52,17 +55,18 @@ export default function Quiz(props: IProps): React.ReactElement {
                   <Form.Control
                     type="date"
                     name="dob"
-                    onChange={handleOptionChange}
+                    onChange={handleOptionChange} // Handling option change for date of birth input
                     placeholder="Enter your DOB"
                     required
                   />
                 </Form.Group>
                 <h3 className="text-center mt-5 mb-5"> Quiz Questions </h3>
                 <hr />
-                {/* Questions */}
+                {/* Mapping through quiz questions */}
                 {questions.map((question, i) => (
                   <React.Fragment key={i}>
                     <Form.Group controlId="quizQuestion2" className="mb-4">
+                      {/* Label for each question */}
                       <Form.Label
                         style={{
                           fontSize: "1.15rem",
@@ -74,6 +78,7 @@ export default function Quiz(props: IProps): React.ReactElement {
                       >
                         Question {i + 1}: {question.Title}
                       </Form.Label>
+                      {/* Rendering Options component if question type is 'options', else rendering input field */}
                       {question.type === "options" ? (
                         <Options
                           choices={question.Choices.split(",")}

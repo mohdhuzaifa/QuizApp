@@ -1,24 +1,25 @@
 import * as React from "react";
-import styles from "./QuizApp.module.scss";
-import Home from "../pages/Home";
-import Quizz from "../pages/Quizz";
-import Result from "../pages/Result";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/App.css";
-import { Route, Routes, HashRouter } from "react-router-dom";
-import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp } from "@pnp/sp/presets/all";
-import { IQuestion, E, SelectedOptionsType } from "../Interfaces";
+import styles from "./QuizApp.module.scss"; // Importing SCSS styles
+import Home from "../pages/Home"; // Importing Home component
+import Quizz from "../pages/Quizz"; // Importing Quizz component
+import Result from "../pages/Result"; // Importing Result component
+import "bootstrap/dist/css/bootstrap.min.css"; // Importing Bootstrap CSS
+import "../assets/App.css"; // Importing custom CSS
+import { Route, Routes, HashRouter } from "react-router-dom"; // Importing necessary components from react-router-dom
+import { WebPartContext } from "@microsoft/sp-webpart-base"; // Importing WebPartContext from SharePoint
+import { sp } from "@pnp/sp/presets/all"; // Importing SharePoint PnP JS
+import { IQuestion, E, SelectedOptionsType } from "../Interfaces"; // Importing necessary interfaces
 
 interface IProps {
-  spcontext: WebPartContext;
+  spcontext: WebPartContext; // Props interface containing SharePoint context
 }
 
 export default function QuizApp(props: IProps): React.ReactElement {
-  const [questions, setQuestions] = React.useState<IQuestion[]>([]);
+  const [questions, setQuestions] = React.useState<IQuestion[]>([]); // State to store questions
   const [selectedOptions, setSelectedOptions] =
-    React.useState<SelectedOptionsType>({});
+    React.useState<SelectedOptionsType>({}); // State to store selected options
 
+  // Function to handle option change
   const handleOptionChange = (e: E): void => {
     const { name, value } = e.target;
 
@@ -28,6 +29,7 @@ export default function QuizApp(props: IProps): React.ReactElement {
     });
   };
 
+  // Function to retrieve quiz questions from SharePoint
   const getLists = async () => {
     setQuestions(
       await sp.web.lists
@@ -35,9 +37,9 @@ export default function QuizApp(props: IProps): React.ReactElement {
         .items.select("Title", "type", "Choices")
         .getAll()
     );
-    console.log("questions set");
   };
 
+  // Function to save user responses to SharePoint
   const saveData = async (answers: string[]): Promise<void> => {
     const data = {
       Title: selectedOptions.name,
@@ -52,23 +54,22 @@ export default function QuizApp(props: IProps): React.ReactElement {
       APIResponse4: answers[3],
     };
 
-    console.log("savedata");
-    console.log(data);
-    await sp.web.lists.getByTitle("Responses").items.add(data);
+    await sp.web.lists.getByTitle("Responses").items.add(data); // Adding data to SharePoint list
   };
 
   React.useEffect(() => {
     sp.setup({
       spfxContext: props.spcontext as any,
     });
-    getLists();
+    getLists(); // Fetching quiz questions on component mount
   }, []);
 
+  // Rendering QuizApp component
   return (
     <div className={styles.quizApp}>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} /> {/* Route for Home component */}
           <Route
             path="/quiz"
             element={
@@ -77,7 +78,7 @@ export default function QuizApp(props: IProps): React.ReactElement {
                 handleOptionChange={handleOptionChange}
                 questions={questions}
               />
-            }
+            } // Route for Quizz component with props
           />
           <Route
             path="/result"
@@ -87,7 +88,7 @@ export default function QuizApp(props: IProps): React.ReactElement {
                 questions={questions}
                 saveData={saveData}
               />
-            }
+            } // Route for Result component with props
           />
         </Routes>
       </HashRouter>
