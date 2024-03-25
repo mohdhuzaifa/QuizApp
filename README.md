@@ -2,7 +2,8 @@
 
 ## Summary
 
-Short summary on functionality and used technologies.
+> To test the webpart we have to install two dependencies(two sharepoint lists named Responses and QuizQuestions) which are provided as CSV in this solution.
+> API urls are hardcoded in the code, we can make some arrangements to store it in safe place , but not done due to time limitations.
 
 [picture of the solution in action, if possible]
 
